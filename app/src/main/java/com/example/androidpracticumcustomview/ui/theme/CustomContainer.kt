@@ -15,26 +15,32 @@ import android.widget.FrameLayout
  */
 
 class CustomContainer @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0,
 ) : FrameLayout(context, attrs) {
 
-    init {
-        setWillNotDraw(false)
-    }
+    val children: MutableList<View> = ArrayList()
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        // TODO
-        // ...
+    init {
+//        setWillNotDraw(false)
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        // TODO
-        // ...
+        super.onLayout(changed, left, top, right, bottom)
+        children.forEachIndexed { index, child ->
+            val width = child.measuredWidth
+            val height = child.measuredHeight
+            val demiHeight = (bottom - top) / 2
+            val childLeft = left + (right - left - width) / 2
+            val childTop = top + (demiHeight - top - height) / 2 + demiHeight * index
+            child.layout(childLeft, childTop, childLeft + width, childTop + height)
+        }
     }
 
     override fun addView(child: View) {
-        // TODO
-        // ...
+        super.addView(child)
+        if (children.size >= 2) throw IllegalStateException("2 children MAX")
+        children.add(child)
+        requestLayout()
     }
+
 }
