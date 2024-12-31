@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.view.isVisible
 import com.example.androidpracticumcustomview.ui.theme.CustomContainer
 import com.example.androidpracticumcustomview.ui.theme.MainScreen
 
@@ -22,10 +23,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)/*
         Раскомментируйте нужный вариант
          */
-//        startXmlPracticum() // «традиционный» android (XML)
-          setContent { // Jetpack Compose
-              MainScreen()
-          }
+        startXmlPracticum() // «традиционный» android (XML)
+//          setContent { // Jetpack Compose
+//              MainScreen()
+//          }
     }
 
     private fun startXmlPracticum() {
@@ -41,8 +42,8 @@ class MainActivity : ComponentActivity() {
             )
             gravity = Gravity.CENTER_HORIZONTAL
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-            customContainer.addView(this)
         }
+        customContainer.addView(firstView)
 
         val secondView = TextView(this).apply {
             text = context.getString(R.string.second_textview)
@@ -54,6 +55,7 @@ class MainActivity : ComponentActivity() {
             gravity = Gravity.CENTER_HORIZONTAL
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         }
+
 
         // Добавление второго элемента через некоторое время
         Handler(Looper.getMainLooper()).postDelayed({
