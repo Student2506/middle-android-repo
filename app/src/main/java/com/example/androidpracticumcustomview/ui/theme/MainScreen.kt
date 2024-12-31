@@ -32,7 +32,7 @@ fun MainScreen() {
                     Text(stringResource(R.string.first_textview), fontSize = 20.sp)
                 },
                 secondChild = {
-                    Text(stringResource(R.string.second_textview))
+                    Text(stringResource(R.string.second_textview), fontSize = 20.sp)
                 }
             )
         }

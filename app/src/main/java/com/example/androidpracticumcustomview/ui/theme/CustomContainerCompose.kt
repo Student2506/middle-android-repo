@@ -1,11 +1,9 @@
 package com.example.androidpracticumcustomview.ui.theme
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
@@ -17,7 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -37,31 +35,44 @@ fun CustomContainerCompose(
 ) {
     // Блок создания и инициализации переменных
     // ..
+    val ANIMATION_LENGTH = 5000
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
     val coroutineScope = rememberCoroutineScope()
     var isSecondElementVisible by remember { mutableStateOf(false) }
     var isFirstElementVisible by remember { mutableStateOf(false) }
-    val animatedFirstAlpha by animateFloatAsState(
-        targetValue = if (isFirstElementVisible) 1f else 0f, label = "alpha"
-    )
-    val offsetY = remember { Animatable(0f) }
-    val alphaFirst = remember { Animatable(0f)}
-    fun animateText() {
-        coroutineScope.launch {
-
-            alphaFirst.animateTo(
-                targetValue = 1f, animationSpec = tween(600)
-            )
-            offsetY.animateTo(
-                targetValue = -100f, animationSpec = tween(600)
-            )
-        }
+    val translation =
+        updateTransition(targetState = isFirstElementVisible, label = "ChangeVisibility")
+    val boxVisibility by translation.animateFloat(
+        transitionSpec = { tween(durationMillis = ANIMATION_LENGTH) }, label = "Visibility"
+    ) { state ->
+        if (state) 1f else 0f
     }
+    val boxPosition by translation.animateDp(
+        transitionSpec = { tween(durationMillis = ANIMATION_LENGTH) }, label = "Position"
+    ) { state ->
+        if (state) -screenHeight / 4 else 0.dp
+    }
+    val translationSecond =
+        updateTransition(targetState = isSecondElementVisible, label = "ChangeVisibilityPosition")
+    val secondBoxVisibility by translationSecond.animateFloat(
+        transitionSpec = { tween(durationMillis = ANIMATION_LENGTH) }, label = "Visibility"
+    ) { state ->
+        if (state) 1f else 0f
+    }
+
+
+    val secondBoxPosition by translationSecond.animateDp(
+        transitionSpec = { tween(durationMillis = ANIMATION_LENGTH) }, label = "Position"
+    ) { state ->
+        if (state) screenHeight / 4 else 0.dp
+    }
+
 
     // Блок активации анимации при первом запуске
     LaunchedEffect(Unit) {
         coroutineScope.launch {
             isFirstElementVisible = true
-            animateText()
             delay(2000)
             isSecondElementVisible = true
         }
@@ -69,24 +80,24 @@ fun CustomContainerCompose(
 
     // Основной контейнер
     Box {
-
-
-            Box(modifier = Modifier.offset(0.dp, offsetY.value.dp).alpha(alphaFirst.value) ) {
-                firstChild?.let {
-                    it()
-                }
-            }
-        AnimatedVisibility(
-            visible = isSecondElementVisible,
-            enter = fadeIn(animationSpec = tween(600)),
-            exit = fadeOut(animationSpec = tween(300))
+        Box(
+            modifier = Modifier
+                .offset(0.dp, boxPosition)
+                .alpha(boxVisibility)
         ) {
-            secondChild?.let {
+            firstChild?.let {
                 it()
             }
         }
-
+        secondChild?.let {
+            Box(
+                modifier = Modifier
+                    .offset(0.dp, secondBoxPosition)
+                    .alpha(secondBoxVisibility)
+            ) {
+                it()
+            }
+        }
     }
-
 
 }
