@@ -2,7 +2,6 @@ package com.example.androidpracticumcustomview.ui.theme
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
@@ -24,16 +23,17 @@ class CustomContainer @JvmOverloads constructor(
     val children: MutableList<View> = ArrayList()
 
     init {
-//        setWillNotDraw(false)
-        this.getViewTreeObserver().addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                viewTreeObserver.removeOnGlobalLayoutListener(this)
-                if (children.size == 1)
-                    children[0].animate().alpha(1f)
-                        .translationY(-measuredHeight / 4f)
-                        .setDuration(DURATION)
-            }
-        });
+        this.getViewTreeObserver()
+            .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    if (children.size == 1) {
+                        children[0].animate().alpha(1f).setDuration(TRANSPARENCY_ANIMATION_LENGTH)
+                        children[0].animate().translationY(-measuredHeight / 4f)
+                            .setDuration(MOVE_ANIMATION_LENGTH)
+                    }
+                }
+            })
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -43,8 +43,7 @@ class CustomContainer @JvmOverloads constructor(
             val height = child.measuredHeight
             val demiHeight = (bottom - top) / 2
             val childLeft = left + (right - left - width) / 2
-//            val childTop = top + (demiHeight - top - height) / 2 + demiHeight * index
-            val childTop = top + demiHeight - height / 2 //+ demiHeight * index
+            val childTop = top + demiHeight - height / 2
             child.layout(childLeft, childTop, childLeft + width, childTop + height)
         }
     }
@@ -56,15 +55,15 @@ class CustomContainer @JvmOverloads constructor(
         child.alpha = 0f
         Log.d(TAG, height.toString())
         if (children.size > 1) {
-            child.animate().alpha(1f)
-                .translationY(measuredHeight / 4f)
-                .setDuration(DURATION)
+            child.animate().alpha(1f).setDuration(TRANSPARENCY_ANIMATION_LENGTH)
+            child.animate().translationY(measuredHeight / 4f).setDuration(MOVE_ANIMATION_LENGTH)
         }
         requestLayout()
     }
 
     companion object {
-        private const val DURATION = 5000L
         private const val TAG = "CustomContainer"
+        const val MOVE_ANIMATION_LENGTH = 5000L
+        const val TRANSPARENCY_ANIMATION_LENGTH = 2000L
     }
 }

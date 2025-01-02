@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import com.example.androidpracticumcustomview.ui.util.SystemConstants.MOVE_ANIMATION_LENGTH
+import com.example.androidpracticumcustomview.ui.util.SystemConstants.TRANSPARENCY_ANIMATION_LENGTH
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -33,37 +35,36 @@ fun CustomContainerCompose(
     firstChild: @Composable (() -> Unit)?,
     secondChild: @Composable (() -> Unit)?,
 ) {
-    // Блок создания и инициализации переменных
-    // ..
-    val ANIMATION_LENGTH = 5000
     val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
+    val screenHeight by remember { mutableStateOf(configuration.screenHeightDp.dp) }
     val coroutineScope = rememberCoroutineScope()
     var isSecondElementVisible by remember { mutableStateOf(false) }
     var isFirstElementVisible by remember { mutableStateOf(false) }
     val translation =
         updateTransition(targetState = isFirstElementVisible, label = "ChangeVisibility")
     val boxVisibility by translation.animateFloat(
-        transitionSpec = { tween(durationMillis = ANIMATION_LENGTH) }, label = "Visibility"
+        transitionSpec = { tween(durationMillis = TRANSPARENCY_ANIMATION_LENGTH) },
+        label = "Visibility"
     ) { state ->
         if (state) 1f else 0f
     }
     val boxPosition by translation.animateDp(
-        transitionSpec = { tween(durationMillis = ANIMATION_LENGTH) }, label = "Position"
+        transitionSpec = { tween(durationMillis = MOVE_ANIMATION_LENGTH) }, label = "Position"
     ) { state ->
         if (state) -screenHeight / 4 else 0.dp
     }
     val translationSecond =
         updateTransition(targetState = isSecondElementVisible, label = "ChangeVisibilityPosition")
     val secondBoxVisibility by translationSecond.animateFloat(
-        transitionSpec = { tween(durationMillis = ANIMATION_LENGTH) }, label = "Visibility"
+        transitionSpec = { tween(durationMillis = TRANSPARENCY_ANIMATION_LENGTH) },
+        label = "Visibility"
     ) { state ->
         if (state) 1f else 0f
     }
 
 
     val secondBoxPosition by translationSecond.animateDp(
-        transitionSpec = { tween(durationMillis = ANIMATION_LENGTH) }, label = "Position"
+        transitionSpec = { tween(durationMillis = MOVE_ANIMATION_LENGTH) }, label = "Position"
     ) { state ->
         if (state) screenHeight / 4 else 0.dp
     }
