@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
@@ -85,6 +86,7 @@ fun CustomContainerCompose(
             modifier = Modifier
                 .offset(0.dp, boxPosition)
                 .alpha(boxVisibility)
+                .align(Alignment.Center)
         ) {
             firstChild?.let {
                 it()
@@ -95,6 +97,7 @@ fun CustomContainerCompose(
                 modifier = Modifier
                     .offset(0.dp, secondBoxPosition)
                     .alpha(secondBoxVisibility)
+                    .align(Alignment.Center)
             ) {
                 it()
             }
