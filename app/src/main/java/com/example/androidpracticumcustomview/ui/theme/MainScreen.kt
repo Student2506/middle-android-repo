@@ -10,7 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.getString
 import com.example.androidpracticumcustomview.R
 
 /*
@@ -24,17 +23,14 @@ fun MainScreen() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues), contentAlignment = Alignment.Center
+                .padding(paddingValues),
+            contentAlignment = Alignment.Center
         ) {
-
-            CustomContainerCompose(
-                firstChild = {
-                    Text(stringResource(R.string.first_textview), fontSize = 40.sp)
-                },
-                secondChild = {
-                    Text(stringResource(R.string.second_textview), fontSize = 40.sp)
-                }
-            )
+            CustomContainerCompose(firstChild = {
+                Text(stringResource(R.string.first_textview), fontSize = 40.sp)
+            }, secondChild = {
+                Text(stringResource(R.string.second_textview), fontSize = 40.sp)
+            })
         }
     }
 }

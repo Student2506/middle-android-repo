@@ -9,7 +9,6 @@ import android.view.Gravity
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.core.view.isVisible
 import com.example.androidpracticumcustomview.ui.theme.CustomContainer
 import com.example.androidpracticumcustomview.ui.theme.MainScreen
 
@@ -24,9 +23,9 @@ class MainActivity : ComponentActivity() {
         Раскомментируйте нужный вариант
          */
 //        startXmlPracticum() // «традиционный» android (XML)
-          setContent { // Jetpack Compose
-              MainScreen()
-          }
+        setContent { // Jetpack Compose
+            MainScreen()
+        }
     }
 
     private fun startXmlPracticum() {
@@ -36,9 +35,7 @@ class MainActivity : ComponentActivity() {
         val firstView = TextView(this).apply {
             text = context.getString(R.string.first_textview)
             textSize = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP,
-                20f,
-                context.resources.displayMetrics
+                TypedValue.COMPLEX_UNIT_SP, 20f, context.resources.displayMetrics
             )
             gravity = Gravity.CENTER_HORIZONTAL
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
@@ -48,9 +45,7 @@ class MainActivity : ComponentActivity() {
         val secondView = TextView(this).apply {
             text = context.getString(R.string.second_textview)
             textSize = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP,
-                20f,
-                context.resources.displayMetrics
+                TypedValue.COMPLEX_UNIT_SP, 20f, context.resources.displayMetrics
             )
             gravity = Gravity.CENTER_HORIZONTAL
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
