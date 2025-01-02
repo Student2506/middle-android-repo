@@ -1,8 +1,9 @@
 package com.example.androidpracticumcustomview.ui.theme
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
@@ -28,9 +29,7 @@ class CustomContainer @JvmOverloads constructor(
                 override fun onGlobalLayout() {
                     viewTreeObserver.removeOnGlobalLayoutListener(this)
                     if (children.size == 1) {
-                        children[0].animate().alpha(1f).setDuration(TRANSPARENCY_ANIMATION_LENGTH)
-                        children[0].animate().translationY(-measuredHeight / 4f)
-                            .setDuration(MOVE_ANIMATION_LENGTH)
+                        animation(children[0], -measuredHeight / 4f)
                     }
                 }
             })
@@ -38,7 +37,7 @@ class CustomContainer @JvmOverloads constructor(
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        children.forEachIndexed { index, child ->
+        children.forEachIndexed { _, child ->
             val width = child.measuredWidth
             val height = child.measuredHeight
             val demiHeight = (bottom - top) / 2
@@ -53,16 +52,23 @@ class CustomContainer @JvmOverloads constructor(
         if (children.size >= 2) throw IllegalStateException("2 children MAX")
         children.add(child)
         child.alpha = 0f
-        Log.d(TAG, height.toString())
         if (children.size > 1) {
-            child.animate().alpha(1f).setDuration(TRANSPARENCY_ANIMATION_LENGTH)
-            child.animate().translationY(measuredHeight / 4f).setDuration(MOVE_ANIMATION_LENGTH)
+            animation(child, measuredHeight / 4f)
         }
         requestLayout()
     }
 
+    private fun animation(view: View, height: Float) {
+        val visibilityAnimation = ObjectAnimator.ofFloat(view, "alpha", 1f)
+        visibilityAnimation.setDuration(TRANSPARENCY_ANIMATION_LENGTH)
+        val offsetAnimation = ObjectAnimator.ofFloat(view, "translationY", height)
+        offsetAnimation.setDuration(MOVE_ANIMATION_LENGTH)
+        val animSet = AnimatorSet()
+        animSet.playTogether(visibilityAnimation, offsetAnimation)
+        animSet.start()
+    }
+
     companion object {
-        private const val TAG = "CustomContainer"
         const val MOVE_ANIMATION_LENGTH = 5000L
         const val TRANSPARENCY_ANIMATION_LENGTH = 2000L
     }

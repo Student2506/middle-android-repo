@@ -22,10 +22,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)/*
         Раскомментируйте нужный вариант
          */
-//        startXmlPracticum() // «традиционный» android (XML)
-        setContent { // Jetpack Compose
-            MainScreen()
-        }
+        startXmlPracticum() // «традиционный» android (XML)
+//        setContent { // Jetpack Compose
+//            MainScreen()
+//        }
     }
 
     private fun startXmlPracticum() {
@@ -34,22 +34,19 @@ class MainActivity : ComponentActivity() {
 
         val firstView = TextView(this).apply {
             text = context.getString(R.string.first_textview)
-            textSize = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP, 20f, context.resources.displayMetrics
-            )
+
             gravity = Gravity.CENTER_HORIZONTAL
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         }
+        firstView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50f)
         customContainer.addView(firstView)
 
         val secondView = TextView(this).apply {
             text = context.getString(R.string.second_textview)
-            textSize = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_SP, 20f, context.resources.displayMetrics
-            )
             gravity = Gravity.CENTER_HORIZONTAL
             layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         }
+        secondView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50f)
 
 
         // Добавление второго элемента через некоторое время

@@ -27,9 +27,9 @@ fun MainScreen() {
             contentAlignment = Alignment.Center
         ) {
             CustomContainerCompose(firstChild = {
-                Text(stringResource(R.string.first_textview), fontSize = 40.sp)
+                Text(stringResource(R.string.first_textview), fontSize = 50.sp)
             }, secondChild = {
-                Text(stringResource(R.string.second_textview), fontSize = 40.sp)
+                Text(stringResource(R.string.second_textview), fontSize = 50.sp)
             })
         }
     }
