@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
-import kotlinx.coroutines.delay
 
 /*
 Задание:
@@ -71,7 +70,11 @@ class CustomContainer @JvmOverloads constructor(
         offsetAnimation.setDuration(MOVE_ANIMATION_LENGTH)
         val animSet = AnimatorSet()
         animSet.playTogether(visibilityAnimation, offsetAnimation)
-        animSet.startDelay = if (children.size == 1) { 0 } else { timeShift }
+        animSet.startDelay = if (children.size == 1) {
+            0
+        } else {
+            timeShift
+        }
         animSet.start()
     }
 
