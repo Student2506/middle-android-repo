@@ -22,10 +22,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)/*
         Раскомментируйте нужный вариант
          */
-//        startXmlPracticum() // «традиционный» android (XML)
-        setContent { // Jetpack Compose
-            MainScreen()
-        }
+        startXmlPracticum() // «традиционный» android (XML)
+//        setContent { // Jetpack Compose
+//            MainScreen()
+//        }
     }
 
     private fun startXmlPracticum() {
