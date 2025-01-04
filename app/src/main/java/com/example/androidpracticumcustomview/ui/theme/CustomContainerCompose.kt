@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
+import com.example.androidpracticumcustomview.ui.util.SystemConstants.FIRST_SECOND_ADDITION_TIMEOUT
 import com.example.androidpracticumcustomview.ui.util.SystemConstants.MOVE_ANIMATION_LENGTH
 import com.example.androidpracticumcustomview.ui.util.SystemConstants.TRANSPARENCY_ANIMATION_LENGTH
 import kotlinx.coroutines.delay
@@ -75,7 +76,7 @@ fun CustomContainerCompose(
     LaunchedEffect(Unit) {
         coroutineScope.launch {
             isFirstElementVisible = true
-            delay(2000)
+            delay(FIRST_SECOND_ADDITION_TIMEOUT)
             isSecondElementVisible = true
         }
     }
