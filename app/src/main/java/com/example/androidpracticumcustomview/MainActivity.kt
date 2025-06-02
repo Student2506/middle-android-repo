@@ -1,11 +1,16 @@
 package com.example.androidpracticumcustomview
 
+import android.app.ActionBar.LayoutParams
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.TypedValue
+import android.view.Gravity
 import android.widget.TextView
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import com.example.androidpracticumcustomview.ui.theme.CustomContainer
+import com.example.androidpracticumcustomview.ui.theme.MainScreen
 
 /*
 Задание:
@@ -14,13 +19,13 @@ import com.example.androidpracticumcustomview.ui.theme.CustomContainer
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        /*
+        super.onCreate(savedInstanceState)/*
         Раскомментируйте нужный вариант
          */
         startXmlPracticum() // «традиционный» android (XML)
-//          setContent { // Jetpack Compose
-//             MainScreen()
+//        setContent { // Jetpack Compose
+//            MainScreen()
+//        }
     }
 
     private fun startXmlPracticum() {
@@ -28,14 +33,21 @@ class MainActivity : ComponentActivity() {
         setContentView(customContainer)
 
         val firstView = TextView(this).apply {
-            // TODO
-            // ...
+            text = context.getString(R.string.first_textview)
+
+            gravity = Gravity.CENTER_HORIZONTAL
+            layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         }
+        firstView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50f)
+        customContainer.addView(firstView)
 
         val secondView = TextView(this).apply {
-            // TODO
-            // ...
+            text = context.getString(R.string.second_textview)
+            gravity = Gravity.CENTER_HORIZONTAL
+            layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         }
+        secondView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 50f)
+
 
         // Добавление второго элемента через некоторое время
         Handler(Looper.getMainLooper()).postDelayed({
